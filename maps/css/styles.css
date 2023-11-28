@@ -1,0 +1,7 @@
+.custom-marker {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ff0000; /* Specify your desired border color */
+    border-radius: 50%; /* Make it a circle by using border-radius */
+    background-color: #ffffff; /* Specify your desired background color */
+}
