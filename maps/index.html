@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="map" style="width: 100%; height: 100vh;"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpcDI2MHAwMWU4Mmxucml0YXE0djJoIn0.3p1mVIXIstgcyPWpB99pBg';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-122.0308, 36.9741], // starting position
+            zoom: 12 // starting zoom
+        });
+
+        // Add a marker for UC Santa Cruz
+        new mapboxgl.Marker()
+        .setLngLat([-122.0642, 36.9914]) // UCSC coordinates
+        .addTo(map);
+    </script>
+</body>
+</html>
