@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/scripts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/scripts.js" defer></script>
     <title>Slug Cycle</title>
 </head>
 <body>
 
-    <div class="main">
-        <img class="ucsc-img" src="images/1200px-The_University_of_California_1868_UCSC.svg.png" alt="UCSC Logo">
-
-        <div class="center-container">
-            <img class="wheel-img center-disp" src="images/wheel.png" alt="Wheel Image">
-            <h1 class="web-head">UCSC Routes</h1>
-        </div>
-
-        <button onclick="redirectToAnotherPage()" class="go-btn btn-3">Go!</button>
+    <div class="top-nav">
+        <a class="tab active" href="#" data-tab="home">Home</a>
+        <a class="tab" href="#" data-tab="route">Route</a>
+        <a class="tab" href="#" data-tab="facts">Facts</a>
+        <a class="tab" href="#" data-tab="aboutUs">About</a>
     </div>
 
-    <div class="grass-img"></div>
+    <div class="img-container tab-pane active" data-tab-content="home">
+        <img class="website-img" src="images/image website.jpg">
+    </div>
 
-    <!-- Your other webpage content goes here -->
+    <div class="tab-pane" data-tab-content="route">
+        <h3>Routes</h3>
+        <p>Below is a map including biking routes in Santa Cruz!</p>
+    </div>
 
-    <script src="js/scripts.js"></script>
+    <!-- Other tab panes go here -->
+
 </body>
 </html>
