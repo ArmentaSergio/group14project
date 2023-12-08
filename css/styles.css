@@ -78,7 +78,7 @@ body{
 
 /* ---------- Grass class for animation -----------*/
 .grass-img {
-    width: 500%;
+    max-width: 500%;
     height: 100px;
     display: block;
     background-image: url('../images/grass.png');
