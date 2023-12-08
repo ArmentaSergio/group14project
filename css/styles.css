@@ -1,98 +1,48 @@
-body{
-    background-image: linear-gradient(#3fa2d0, #96ccf3);
-    height: 100%;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-.center-container {
-    position: relative;
-    color: white;
-}
-
-.wheel-img {
-    margin-top: 0%;
-    width: 500px;
-    animation: rotation 6s infinite linear;
-}
-
-@keyframes rotation {
-    from{
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.ucsc-img {
-    width: 100px;
-    opacity: .4;
-}
-
-
-/* ------------ Title for the website ----------- */
-.web-head {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-/* ------------ Button color / size modifications ------------- */
-.go-btn {
-    border: none;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #0F1419;
-    transition: 0.5s;
-    background-size: 200% auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.go-btn:hover {
-    background-position: right center; /* change the direction of the change here */
-}
-
-.btn-3 {
-    background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
-}
-
-/* Utility class for centering things in the site */
-.center-disp{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-
-/* ---------- Grass class for animation -----------*/
-.grass-img {
-    max-width: 500%;
-    height: 100px;
-    display: block;
-    background-image: url('../images/grass.png');
-    position: absolute;
-    bottom: 0;
+/* Styles for tabs */
+.top-nav {
+    background-color: #2F3E46;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
-    background-repeat: repeat-x;
-    animation: grass 6s linear infinite;
 }
-@keyframes grass 
-{
-    100% {
-        transform: translateX(-3400px);
-    }
+
+.top-nav a {
+    display: inline-block;
+    color: #84A98C;
+    text-align: center;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.top-nav a:hover {
+    background-color: #CAD2C5;
+    color: black;
+}
+
+.top-nav a.active {
+    background-color: #CAD2C5;
+    color: black;
+}
+
+/* Styles for tab panes */
+.tab-pane {
+    display: none; /* Hide all tab panes by default */
+}
+
+.tab-pane.active {
+    display: block; /* Show the active tab pane */
+    padding: 20px; /* Adjusted padding for better spacing */
+}
+
+/* Add additional styling for tab pane content as needed */
+.tab-pane h3 {
+    color: #52796F; /* Example color for heading in tab pane */
+}
+
+.tab-pane p {
+    color: #354F52; /* Example color for paragraph text in tab pane */
 }
