@@ -1,3 +1,13 @@
+//object with information about trails
+// var trails = {
+//     trailName,
+//     trailLength,
+//     duration,
+//     difficulty,
+//     about
+// };
+
+//event listener for tabs
 $(document).ready(function() {
     // When a tab is clicked
     $('.tab').click(function() {
@@ -16,3 +26,6 @@ $(document).ready(function() {
         $('[data-tab-content="' + tabId + '"]').addClass('active');
     });
 });
+
+//displaying trail information in routes output
+

@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/scripts.js" defer></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
     <title>Slug Cycle</title>
 </head>
 <body>
 
     <div class="top-nav">
         <a class="tab active" href="#" data-tab="home">Home</a>
-        <a class="tab" href="#" data-tab="route">Route</a>
+        <a class="tab" href="#" data-tab="routes">Route</a>
         <a class="tab" href="#" data-tab="facts">Facts</a>
         <a class="tab" href="#" data-tab="aboutUs">About</a>
     </div>
@@ -20,10 +22,86 @@
     <div class="img-container tab-pane active" data-tab-content="home">
         <img class="website-img" src="images/image website.jpg">
     </div>
-
-    <div class="tab-pane" data-tab-content="route">
+    
+    <div class="tab-pane" data-tab-content="routes">
         <h3>Routes</h3>
         <p>Below is a map including biking routes in Santa Cruz!</p>
+
+        <div id = "bike-map">
+            <div id="map" style="width: 100%; height: 100vh;"></div>
+            <script>
+                mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpb3d1Ym0wMWNsMnZ1b3B0aTE0YXFsIn0.f9_PivdonzFgElqgn1eycA';
+                var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [-122.0308, 36.9741], // starting position
+                zoom: 12 // starting zoom
+                });
+            </script>
+        </div>
+
+        <div id="marker-border">    
+            <script>
+                // Add a marker for UC Santa Cruz
+                new mapboxgl.Marker()
+                .setLngLat([-122.0642, 36.9914]) // UCSC coordinates
+                .addTo(map);
+    
+                //adding markers for other routes
+                new mapboxgl.Marker()
+                .setLngLat([-122.0578, 37.0033])//College9 Trailhead
+                .addTo(map);
+    
+                new mapboxgl.Marker()
+                .setLngLat([-122.05061, 36.99813])//Spring Box Trailhead
+                .addTo(map);
+    
+                new mapboxgl.Marker()
+                .setLngLat([-122.04461, 36.998746])//Pogonip Open Space
+                .addTo(map);
+    
+                new mapboxgl.Marker()
+                .setLngLat([-122.05028, 37.01252])//Santa Cruz Rincon Trail Trailhead
+                .addTo(map);
+            </script>
+        </div>
+    </div>
+
+    <div class="tab-pane" data-tab-content="facts">
+        <h4> Interesting Information</h4>
+
+        <div id = "facts-output">
+            <ul>
+                <li>
+                    College Nine Trailhead <br>
+                    Trail Length: <br>
+                    Duration: <br>
+                    Difficulty: <br>
+                    About: 
+                </li>
+                <li>
+                    Spring Box Trailhead<br>
+                    Trail Length: <br>
+                    Duration: <br>
+                    Difficulty: <br>
+                    About: 
+                </li>
+                <li> 
+                    Pogonip Open Space<br>
+                    Trail Length: <br>
+                    Duration: <br>
+                    Difficulty: <br>
+                    About: 
+                </li>
+                <li> 
+                    Santa Cruz Rincon Trail Trailhead<br>
+                    Trail Length: <br>
+                    Duration: <br>
+                    Difficulty: <br>
+                    About: 
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- Other tab panes go here -->
