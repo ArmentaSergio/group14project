@@ -7,7 +7,10 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/scripts.js" defer></script>
     <script src="https://kit.fontawesome.com/01dda5dcd3.js" crossorigin="anonymous"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://js.sentry-cdn.com/9c5feb5b248b49f79a585804c259febc.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js" defer></script>     
     <title>Slug Cycle</title>
 </head>
 <body>
@@ -55,125 +58,261 @@
 
     </div>
 
-    <div class="tab-pane" data-tab-content="route">
-        <h3>Routes</h3>
-        <p>Below is a map including biking routes in Santa Cruz!</p>
-    </div>
-
-    <div class="tab-pane" data-tab-content="route">
-
-        <div id="map"></div>
-
-        <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
-        <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpb3d1Ym0wMWNsMnZ1b3B0aTE0YXFsIn0.f9_PivdonzFgElqgn1eycA';
-            var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v11',
-                center: [-122.0308, 36.9741],
-                zoom: 12
-            });
-        </script>
-
-        <div id="marker-border">    
-            <script>
-                // Add a marker for UC Santa Cruz
-                new mapboxgl.Marker()
-                .setLngLat([-122.0642, 36.9914]) // UCSC coordinates
-                .addTo(map);
-
-                //adding markers for other routes
-                new mapboxgl.Marker()
-                .setLngLat([-122.05522411925203, 37.002428212744604])//Chinquapin Road 
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.05768505972667, 36.99232619689445])//Great Meadow Bike Path (Uphill)
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.0615065523124, 37.00295743430327])//Red Hill Road
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.06166923526803, 37.00250637309262])//Spring Road
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.06844587507082, 37.006452665042694])//West Road
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.07547082088158, 37.019253497267826])//Marshal Road
-                .addTo(map);
-
-                new mapboxgl.Marker()
-                .setLngLat([-122.06438318511404, 37.00614879053396])//Fuel Break Road
-                .addTo(map);
-            </script>
+    <div class="route-info tab-pane" data-tab-content="route">
+        <div class="route-col">
+            <p>Explore the biking routes in Santa Cruz with the map provided below!</p>
         </div>
     </div>
+    
+    <div class="routes tab-pane" data-tab-content="route">
+        <div id="map"></div>
+        <div id="instructions"></div>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpb3d1Ym0wMWNsMnZ1b3B0aTE0YXFsIn0.f9_PivdonzFgElqgn1eycA';
+            const map = new mapboxgl.Map({
+                container: 'map', // container id
+                style: 'mapbox://styles/mapbox/streets-v12', // stylesheet location
+                center: [-122.662323, 45.523751], // starting position
+                zoom: 12 // starting zoom
+            });
+    
+            // set the bounds of the map
+            const bounds = [
+                [-122.065789, 36.947164], // Southwest coordinates (longitude, latitude)
+                [-121.979736, 37.002468]
+            ];
+            map.setMaxBounds(bounds);
+    
+            // an arbitrary start will always be the same
+            // only the end or destination will change
+            const start = [-122.065789, 36.947164] // Southwest coordinates (longitude, latitude)
+    
+            // create a function to make a directions request
+            async function getRoute(end) {
+                // make directions request using cycling profile
+                const query = await fetch(
+                    `https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
+                    { method: 'GET' }
+                );
+                const json = await query.json();
+                const data = json.routes[0];
+                const route = data.geometry.coordinates;
+                const geojson = {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': route
+                    }
+                };
+                // if the route already exists on the map, we'll reset it using setData
+                if (map.getSource('route')) {
+                    map.getSource('route').setData(geojson);
+                }
+                // otherwise, we'll make a new request
+                else {
+                    map.addLayer({
+                        'id': 'route',
+                        'type': 'line',
+                        'source': {
+                            'type': 'geojson',
+                            'data': geojson
+                        },
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        'paint': {
+                            'line-color': '#3887be',
+                            'line-width': 5,
+                            'line-opacity': 0.75
+                        }
+                    });
+                }
+    
+                // get the sidebar and add the instructions
+                const instructions = document.getElementById('instructions');
+                const steps = data.legs[0].steps;
+    
+                let tripInstructions = '';
+                for (const step of steps) {
+                    tripInstructions += `<li>${step.maneuver.instruction}</li>`;
+                }
+                instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
+                    data.duration / 60
+                )} min 🚴 </strong></p><ol>${tripInstructions}</ol>`;
+            }
+    
+            map.on('load', () => {
+                // make an initial directions request that
+                // starts and ends at the same location
+                getRoute(start);
+    
+                // Add destination to the map
+                map.addLayer({
+                    'id': 'point',
+                    'type': 'circle',
+                    'source': {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': [
+                                {
+                                    'type': 'Feature',
+                                    'properties': {},
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': start
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    'paint': {
+                        'circle-radius': 10,
+                        'circle-color': '#3887be'
+                    }
+                });
+    
+                // allow the user to click the map to change the destination
+                map.on('click', (event) => {
+                    const coords = Object.keys(event.lngLat).map(
+                        (key) => event.lngLat[key]
+                    );
+                    const end = {
+                        'type': 'FeatureCollection',
+                        'features': [
+                            {
+                                'type': 'Feature',
+                                'properties': {},
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': coords
+                                }
+                            }
+                        ]
+                    };
+                    if (map.getLayer('end')) {
+                        map.getSource('end').setData(end);
+                    } else {
+                        map.addLayer({
+                            'id': 'end',
+                            'type': 'circle',
+                            'source': {
+                                'type': 'geojson',
+                                'data': {
+                                    'type': 'FeatureCollection',
+                                    'features': [
+                                        {
+                                            'type': 'Feature',
+                                            'properties': {},
+                                            'geometry': {
+                                                'type': 'Point',
+                                                'coordinates': coords
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            'paint': {
+                                'circle-radius': 10,
+                                'circle-color': '#f30'
+                            }
+                        });
+                    }
+                    getRoute(coords);
+                });
+            });
+        </script>
+    </div>
+    
 
 
     <div class="tab-pane" data-tab-content="facts">
-        <h4> Interesting Information</h4>
+        <h2 class="header">Interesting Information</h2>
+    </div>
+    
+    <div class="facts tab-pane" data-tab-content="facts">
+        
+    
+        <div class="fact-container">
+            <div class="fact">
+                <div>
+                    <h5>Chinquapin Road</h5>
+                    <p>Trail Length: 2.1 miles</p>
+                    <p>Duration: 00:11:12 (avg)</p>
+                    <p>Difficulty: moderate</p>
+                    <p>About: Commonly ridden fire road that cuts across upper UC and over to Wilder Ranch State Park at Empire Grade Rd. The top, where it meets Wilder, is commonly called "Twin Gates" because of the gates on each side of Empire Grade Rd.</p>
+                </div>
+            </div>
+    
+            <div class="fact">
+                <div>
+                    <h5>Great Meadow Bike Path (Uphill)</h5>
+                    <p>Trail Length: 4948 ft</p>
+                    <p>Duration: 00:08:03 (avg)</p>
+                    <p>Difficulty: easy</p>
+                    <p>About: </p>
+                </div>
+            </div>
+    
+            <div class="fact">
+                <div>
+                    <h5>Red Hill Road</h5>
+                    <p>Trail Length: 3278 ft</p>
+                    <p>Duration: 00:04:12 (avg)</p>
+                    <p>Difficulty: moderate</p>
+                    <p>About: </p>
+                </div>
+            </div>
+        </div>
 
-        <div id = "facts-output">
-            <ol>
-                <li>
-                    Chinquapin Road <br>
-                    Trail Length: 2.1 miles <br>
-                    Duration: 00:11:12 (avg) <br>
-                    Difficulty: moderate <br>
-                    About: Commonly ridden fire road that cuts across upper UC and over to Wilder Ranch State Park at Empire Grade Rd. The top, where it meets Wilder, is commonly called "Twin Gates" because of the gates on each side of Empire Grade Rd.
-                </li>
-                <li>
-                    Great Meadow Bike Path (Uphill)<br>
-                    Trail Length: 4948 ft <br>
-                    Duration: 00:08:03 (avg) <br>
-                    Difficulty: easy <br>
-                    About: 
-                </li>
-                <li> 
-                    Red Hill Road<br>
-                    Trail Length: 3278 ft <br>
-                    Duration: 00:04:12 (avg)<br>
-                    Difficulty: moderate<br>
-                    About: 
-                </li>
-                <li> 
-                    Spring Road <br>
-                    Trail Length: 1729 ft<br>
-                    Duration: 00:03:20 (avg) <br>
-                    Difficulty: easy <br>
-                    About: 
-                </li>
-                <li> 
-                    West Road <br>
-                    Trail Length: 3212 ft<br>
-                    Duration: 00:03:20 (avg) <br>
-                    Difficulty: moderate <br>
-                    About: 
-                </li>
-                <li> 
-                    Marshal Road<br>
-                    Trail Length: 2264 ft<br>
-                    Duration: 00:06:08 (avg) <br>
-                    Difficulty: moderate <br>
-                    About: A fire road that connects a neighborhood to the forest. It's mostly used as a climb up into the forest in search of a descent to other places.
-                </li>
-                <li> 
-                    Fuel Break Road<br>
-                    Trail Length: 1.0 mile<br>
-                    Duration: 00:05:57 (avg) <br>
-                    Difficulty: moderate <br>
-                    About: 
-                </li>
-            </ol>
+        <div>
+            <div class="fact">
+                <div>
+                    <h5>Spring Road</h5>
+                    <p>Trail Length: 1729 ft</p>
+                    <p>Duration: 00:03:20 (avg)</p>
+                    <p>Difficulty: easy</p>
+                    <p>About: </p>
+                </div>
+            </div>
+    
+            <div class="fact">
+                <div>
+                    <h5>West Road</h5>
+                    <p>Trail Length: 3212 ft</p>
+                    <p>Duration: 00:03:20 (avg)</p>
+                    <p>Difficulty: moderate</p>
+                    <p>About: </p>
+                </div>
+            </div>
+    
+            <div class="fact">
+                <div>
+                    <h5>Marshal Road</h5>
+                    <p>Trail Length: 2264 ft</p>
+                    <p>Duration: 00:06:08 (avg)</p>
+                    <p>Difficulty: moderate</p>
+                    <p>About: A fire road that connects a neighborhood to the forest. It's mostly used as a climb up into the forest in search of a descent to other places.</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="fact">
+                <div>
+                    <h5>Fuel Break Road</h5>
+                    <p>Trail Length: 1.0 mile</p>
+                    <p>Duration: 00:05:57 (avg)</p>
+                    <p>Difficulty: moderate</p>
+                    <p>About: </p>
+                </div>
+            </div>
         </div>
     </div>
+    
 
-    <!-- Other tab panes go here -->
 
 </body>
 </html>
