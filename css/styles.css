@@ -9,11 +9,68 @@ body {
 }
 
 
+.facts{
+    width: 100%;
+    justify-content: space-between;
+    padding: 2vh 10vh;
+}
+.header{
+    text-align: center;
+    width: 100%;
+    color: #52796F;
+    font-size: 4vh;
+}
+
+.fact {
+    display: flex;
+    width: 30vh;
+    height: 30vh;
+    margin: 10px;
+    padding: 20px; /* Increased padding */
+    border-radius: 10px; /* Increased border radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s; /* Add a smooth transition effect */
+    background-color: #CAD2C5;
+}
+
+.fact:hover {
+    transform: scale(1.1); /* Increased scale on hover */
+}
+
+.fact h5 {
+    margin-bottom: 15px; /* Increased margin */
+    font-size: 20px; /* Increased font size */
+    color: #52796F;
+}
+
+.fact p {
+    font-size: 16px; /* Increased font size */
+    color: #666;
+}
+
+
+
 
 #map {
+    margin-top: 2vh;
     margin-left: auto;
     width: 60vh;
     height: 80vh;
+    border-radius: 3vh;
+}
+
+#instructions {
+    margin-top: 2vh;
+    border: .25vh solid black;
+    border-radius: 1vh;
+    padding: 3vh;
+    margin-right: auto;
+    margin-left: auto;
+    width: 50vh;
+}
+
+.routes {
+    background-color: white
 }
 
 .top-nav {
@@ -126,9 +183,18 @@ body {
     font-family: "aktiv-grotesk","Aktiv Grotesk","Open Sans","Gill Sans MT","Gill Sans","Corbel","Arial","sans-serif";
 }
 
-.infobox h2 {
-    font-size: 2vh;
-    margin-bottom: 1.5vh;
+.route-col {
+    width: 100%;
+    text-align: center;
+    color: #52796F;
+}
+
+.route-col h3{
+    font-size: 5vh;
+}
+
+.route-col p {
+    font-size: 3vh;
 }
 
 .info-img {
@@ -139,16 +205,12 @@ body {
 /* Styles for tab panes */
 .tab-pane {
     display: none;
-    width: 100%; /* Set the width */
+    width: 100%; 
 }
 
 .tab-pane.active {
     display: flex;
 }
 
-/* Add additional styling for tab pane content as needed */
-.tab-pane h3 {
-    color: #52796F; /* Example color for heading in tab pane */
-}
 
 
