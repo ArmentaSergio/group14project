@@ -8,6 +8,12 @@ body {
     padding-top: 0px; /* Adjust the value based on the height of your top navigation bar */
 }
 
+.banner-logo {
+    width: 15vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 .facts{
     width: 100%;
