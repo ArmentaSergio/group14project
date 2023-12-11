@@ -6,39 +6,74 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/scripts.js" defer></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <script src="https://kit.fontawesome.com/01dda5dcd3.js" crossorigin="anonymous"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet" />
     <title>Slug Cycle</title>
 </head>
 <body>
 
-    <div class="top-nav">
-        <a class="tab active" href="#" data-tab="home">Home</a>
-        <a class="tab" href="#" data-tab="routes">Route</a>
-        <a class="tab" href="#" data-tab="facts">Facts</a>
-        <a class="tab" href="#" data-tab="aboutUs">About</a>
+    <div class="container">
+        <div class="top-nav">
+            <a class="tab active" href="#" data-tab="home">Home</a>
+            <a class="tab" href="#" data-tab="route">Route</a>
+            <a class="tab" href="#" data-tab="facts">Facts</a>
+            <a class="tab" href="#" data-tab="aboutUs">About</a>
+        </div>
+
+        <div class="img-container tab-pane active" data-tab-content="home">
+            <div class="color-overlay"></div>
+            <img class="website-img" src="images/image website.jpg">
+            <img src="images/logo.png" alt="Your Logo" class="logo">
+        </div>
+
+        <div class="reviews tab-pane active" data-tab-content="home">
+            <div class="columns">
+                <i class="fa-solid fa-map-location-dot columnsi"></i>
+                <h1>Explore Biking Routes</h1>
+                <p class="columnsp">Discover and explore a variety of biking routes in Santa Cruz. Whether you're a beginner or an experienced cyclist, our app provides detailed information on scenic routes and trails.</p>
+            </div>
+            <div class="columns">
+                <i class="fas fa-info-circle columnsi"></i>
+                <h1>Learn Interesting Facts</h1>
+                <p class="columnsp">Get interesting facts about biking, health benefits, and local cycling events. Stay informed and engaged with our informative content to enhance your cycling experience.</p>
+            </div>
+            <div class="columns">
+                <i class="fas fa-users columnsi"></i>
+                <h1>Join the Cycling Community</h1>
+                <p class="columnsp">Join a vibrant community of cyclists. Share your experiences, participate in discussions, and stay connected with fellow biking enthusiasts. Build a network and make new biking friends!</p>
+            </div>
+        </div>
+
+        <div class="map-Box tab-pane active" data-tab-content="home">
+            <div class="infobox">
+                <img src="images/bike.png" alt="bike" class="bike-img">
+                <h2>Discover Santa Cruz on Two Wheels</h2>
+                <p>Discover scenic biking routes for all levels. Immerse in breathtaking scenery, find hidden gems, and join our community for an exciting biking adventure in Santa Cruz!</p>
+            </div>
+            <img src="images/ucsc-trail-map.jpg" alt="map image" class="info-img">
+        </div>
+
     </div>
 
-    <div class="img-container tab-pane active" data-tab-content="home">
-        <img class="website-img" src="images/image website.jpg">
-    </div>
-    
-    <div class="tab-pane" data-tab-content="routes">
+    <div class="tab-pane" data-tab-content="route">
         <h3>Routes</h3>
         <p>Below is a map including biking routes in Santa Cruz!</p>
+    </div>
 
-        <div id = "bike-map">
-            <div id="map" style="width: 100%; height: 100vh;"></div>
-            <script>
-                mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpb3d1Ym0wMWNsMnZ1b3B0aTE0YXFsIn0.f9_PivdonzFgElqgn1eycA';
-                var map = new mapboxgl.Map({
+    <div class="tab-pane" data-tab-content="route">
+
+        <div id="map"></div>
+
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiamFhYmFycmkxMiIsImEiOiJjbHBpb3d1Ym0wMWNsMnZ1b3B0aTE0YXFsIn0.f9_PivdonzFgElqgn1eycA';
+            var map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v11',
-                center: [-122.0308, 36.9741], // starting position
-                zoom: 12 // starting zoom
-                });
-            </script>
-        </div>
+                center: [-122.0308, 36.9741],
+                zoom: 12
+            });
+        </script>
 
         <div id="marker-border">    
             <script>
@@ -46,20 +81,20 @@
                 new mapboxgl.Marker()
                 .setLngLat([-122.0642, 36.9914]) // UCSC coordinates
                 .addTo(map);
-    
+
                 //adding markers for other routes
                 new mapboxgl.Marker()
                 .setLngLat([-122.05522411925203, 37.002428212744604])//Chinquapin Road 
                 .addTo(map);
-    
+
                 new mapboxgl.Marker()
                 .setLngLat([-122.05768505972667, 36.99232619689445])//Great Meadow Bike Path (Uphill)
                 .addTo(map);
-    
+
                 new mapboxgl.Marker()
                 .setLngLat([-122.0615065523124, 37.00295743430327])//Red Hill Road
                 .addTo(map);
-    
+
                 new mapboxgl.Marker()
                 .setLngLat([-122.06166923526803, 37.00250637309262])//Spring Road
                 .addTo(map);
@@ -78,6 +113,7 @@
             </script>
         </div>
     </div>
+
 
     <div class="tab-pane" data-tab-content="facts">
         <h4> Interesting Information</h4>
