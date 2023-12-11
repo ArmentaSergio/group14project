@@ -1,18 +1,50 @@
-/* Styles for tabs */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 0px; /* Adjust the value based on the height of your top navigation bar */
+}
+
+
+
+#map {
+    margin-left: auto;
+    width: 60vh;
+    height: 80vh;
+}
+
 .top-nav {
-    background-color: #2F3E46;
+    background-color: white;
     overflow: hidden;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 0px 20px; /* Adjust padding as needed */
+    z-index: 3; /* Ensure the navigation bar is above other elements */
+}
+
+.logo {
+    width: 300px; /* Adjust the height as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4; /* Ensure the logo is above other elements */
 }
 
 .top-nav a {
+    background-attachment: scroll;
     display: inline-block;
-    color: #84A98C;
+    color: #52796F;
     text-align: center;
-    padding: 15px 20px;
+    padding: 25px 20px;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -28,14 +60,90 @@
     color: black;
 }
 
+/* Styles for the image container and overlay */
+.img-container {
+    position: relative;
+    background-color: #84A98C;
+}
+
+.website-img {
+    opacity: .7;
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: block;
+}
+
+.color-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.reviews {
+    padding: 20px; /* Reduced padding for better text positioning */
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    margin: auto;
+    text-align: center;
+}
+
+
+
+.columns{
+    width: auto;
+    color: #52796F;
+    padding: 20px; /* Added padding to each column */
+    border: 1px solid #ddd; /* Added a border to each column */
+    border-radius: 8px; /* Added rounded corners to each column */
+    word-wrap: break-word;
+    line-height: 28px;
+    margin: 250px 50px;
+}
+
+.columnsp{
+    margin-top: 2vh; /* Adjusted spacing between heading and paragraph */
+    font-size: 1.8vh;
+}
+
+.columnsi {
+    font-size: 4vh; /* Adjusted icon size */
+}
+
+.map-Box{
+    display: flex;
+    align-items: center;
+    background-color: #cad2c5;
+}
+
+.infobox {
+    margin: 0 auto;
+    word-wrap: break-word;
+    width: 700px;
+    max-width: 100%;
+    font-size: 2.5vh;
+    font-family: "aktiv-grotesk","Aktiv Grotesk","Open Sans","Gill Sans MT","Gill Sans","Corbel","Arial","sans-serif";
+}
+
+.infobox h2 {
+    font-size: 2vh;
+    margin-bottom: 1.5vh;
+}
+
+.info-img {
+    margin-left: auto;
+}
+
+
 /* Styles for tab panes */
 .tab-pane {
-    display: none; /* Hide all tab panes by default */
+    display: none;
+    width: 100%; /* Set the width */
 }
 
 .tab-pane.active {
-    display: block; /* Show the active tab pane */
-    padding: 20px; /* Adjusted padding for better spacing */
+    display: flex;
 }
 
 /* Add additional styling for tab pane content as needed */
@@ -43,6 +151,4 @@
     color: #52796F; /* Example color for heading in tab pane */
 }
 
-.tab-pane p {
-    color: #354F52; /* Example color for paragraph text in tab pane */
-}
+
